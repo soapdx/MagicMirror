@@ -1,36 +1,36 @@
 # MagicMirror² Module Development Documentation
 
-This document describes the way to develop your own MagicMirror² modules.
+这篇文档描述了开发你自己的MM2模块的方式。
 
 ## Module structure
 
-All modules are loaded in the `modules` folder. The default modules are grouped together in the `modules/default` folder. Your module should be placed in a subfolder of `modules`. Note that any file or folder your create in the `modules` folder will be ignored by git, allowing you to upgrade the MagicMirror² without the loss of your files.
+所有的模块被加载自 `modules` 文件夹. 默认的模块一起放在 `modules/default` 文件夹. 你的模块应当被放在`modules`的子文件夹内. 注意你建立的位于 `modules`的任何文件夹和文件将被git忽略, 以便让你无损升级你的MM2.
 
-A module can be placed in one single folder. Or multiple modules can be grouped in a subfolder. Note that name of the module must be unique. Even when a module with a similar name is placed in a different folder, they can't be loaded at the same time.
+一个模块应当被放置在一个单独的文件夹. 或着复数的模块可以被分组进一个子文件夹. 注意模块的名字应当是独一无二的.甚至当模块有着类似的名字时也应放置于不同的文件夹，它们不能同时被加载.
 
 ### Files
-- **modulename/modulename.js** - This is your core module script.
-- **modulename/node_helper.js** - This is an optional helper that will be loaded by the node script. The node helper and module script can communicate with each other using an intergrated socket system.
-- **modulename/public** - Any files in this folder can be accesed via the browser on `/modulename/filename.ext`.
-- **modulename/anyfileorfolder** Any other file or folder in the module folder can be used by the core module script. For example: *modulename/css/modulename.css* would be a good path for your additional module styles.
+- **modulename/modulename.js** - 这是你的核心模块Script.
+- **modulename/node_helper.js** - 这是一个可选的帮助文件，他能够被node script加载. 这个node帮助和模块script能够使用一个集成的socket系统相互通信.
+- **modulename/public** - 这个文件夹的任何文件能通过浏览器被访问 位于 `/modulename/filename.ext`.
+- **modulename/anyfileorfolder** 任何位于module文件夹的其他的文件或者文件夹均能被核心模块script使用.例如: *modulename/css/modulename.css* 能够作为一个良好的可选模块样式的路径.
 
-## Core module file: modulename.js
-This is the script in which the module will be defined. This script is required in order for the module to be used. In it's most simple form, the core module file must contain:
+## 核心模块文件: modulename.js
+这是一个将模块定义于其中的script. 这个script是必要的以便让模块能被使用. 最简单的情况下, 核心模块文件必须包括:
 ````javascript
 Module.register("modulename",{});
 ````
-Of course, the above module would not do anything fancy, so it's good to look at one of the simplest modules: **helloworld**:
+当然，上面的模块并没有什么卵用,因此不妨看一个最简单的模块: **helloworld**:
 
 ````javascript
 //helloworld.js:
 
 Module.register("helloworld",{
-	// Default module config.
+	// 默认模块配置.
 	defaults: {
 		text: "Hello World!"
 	},
 
-	// Override dom generator.
+	// 覆盖 dom generator.
 	getDom: function() {
 		var wrapper = document.createElement("div");
 		wrapper.innerHTML = this.config.text;
@@ -39,52 +39,52 @@ Module.register("helloworld",{
 });
 ````
 
-As you can see, the `Module.register()` method takes two arguments: the name of the module and an object with the module properties.
+你可以看到 `Module.register()` 方法需要两个参数:模块名称和一个有着模块属性的对象
 
-### Available module instance properties
-After the module is initialized, the module instance has a few available module properties:
+### 可行的模块例子的属性
+当模块被初始化后, 样例模块便拥有一些可行的模块属性:
 
 ####`this.name`
 **String**
 
-The name of the module.
+模块的名称.
 
 ####`this.identifier`
 **String**
 
-This is a unique identifier for the module instance.
+这是一个特有的样例模块识别码.
 
 ####`this.hidden`
 **Boolean**
 
-This represents if the module is currently hidden (faded away).
+这表示模块目前是否被隐藏(消失faded away).
 
 ####`this.config`
 **Boolean**
 
-The configuration of the module instance as set in the user's config.js file. This config will also contain the module's defaults if these properties are not over written by the user config.
+模块实例的配置作为集合在使用者的config.js 文件. 这个config也将包含模块的默认设置 如果这些属性没有被使用者config覆写.
 
 ####`this.data`
 **Object**
 
-The data object contains additional metadata about the module instance:
-- `data.classes` - The classes which are added to the module dom wrapper.
-- `data.file` - The filename of the core module file.
-- `data.path` - The path of the module folder.
-- `data.header` - The header added to the module.
-- `data.position` - The position in which the instance will be shown.
+数据对象包含关于模块实例的可选的 metadata :
+- `data.classes` - 这个类会被添加进模块dom包装器.
+- `data.file` - 核心模块的文件名.
+- `data.path` - 模块文件夹的路径.
+- `data.header` - 添加进模块的 header.
+- `data.position` - 实例被显示的位置.
 
 
 ####`defaults: {}`
-Any properties defined in the defaults object, will be merged with the module config as defined in the user's config.js file. This is the best place to set your modules's configuration defaults. Any of the module configuration properties can be accessed using `this.config.propertyName`, but more about that later.
+任何被定义在默认对象的属性, 将与模块设置合并作为在使用者 config.js 文件中的定义. 这是设置你的模块默认设置最好的位置. 任何模块设置属性能使用 `this.config.propertyName`访问, 但是更多关于这个问题稍后探讨.
 
 ####'requiresVersion:'
 
 *Introduced in version: 2.1.0.*
 
-A string that defines the minimum version of the MagicMirror framework. If it is set, the system compares the required version with the users version. If the version of the user is out of date, it won't run the module. Make sure to also set this value in the Node helper.
+一个定义了最低MM框架版本的字符串. 一旦它被设定,系统将会将需要的版本与使用者的版本比较. 如果使用者的版本落后了，该模块将不会被运行.确保同时在Node helper中设置了这项数值.
 
-**Note:** Since this check is introduced in version 2.1.0, this check will not be run in older versions. Keep this in mind if you get issue reports on your module.
+**Note:** 由于这项检查在版本2.1.0中释出，因此这项检查将不会再旧版本中运行.记住这件事如果你在模块中获得issue报告.
 
 Example:
 ````javascript
