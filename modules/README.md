@@ -86,20 +86,20 @@ Module.register("helloworld",{
 
 **Note:** 由于这项检查在版本2.1.0中释出，因此这项检查将不会再旧版本中运行.记住这件事如果你在模块中获得issue报告.
 
-Example:
+样例:
 ````javascript
 requiresVersion: "2.1.0",
 ````
 
-### Subclassable module methods
+### 子类化模块方法
 
 ####`init()`
-This method is called when a module gets instantiated. In most cases you do not need to subclass this method.
+当一个模块被实例化的时候这个方法将被调用.在大多数情况下你不需要子类化这个方法.
 
 ####`start()`
-This method is called when all modules are loaded an the system is ready to boot up. Keep in mind that the dom object for the module is not yet created. The start method is a perfect place to define any additional module properties:
+当所有的模块都被加载完毕进入系统中并准备启动时，这个方法将被调用。记住模块的dom对象还没有被创建. 启动方法是一个好地方去定义任何可选的模块属性:
 
-**Example:**
+**样例:**
 ````javascript
 start: function() {
 	this.mySpecialProperty = "So much wow!";
@@ -110,7 +110,7 @@ start: function() {
 ####`getScripts()`
 **Should return: Array**
 
-The getScripts method is called to request any additional scripts that need to be loaded. This method should therefore return an array with strings. If you want to return a full path to a file in the module folder, use the `this.file('filename.js')` method. In all cases the loader will only load a file once. It even checks if the file is available in the default vendor folder.
+The getScripts 方法被调用是为了请求任何可选的需被加载的脚本. This method should therefore return an array with strings. If you want to return a full path to a file in the module folder, use the `this.file('filename.js')` method. In all cases the loader will only load a file once. It even checks if the file is available in the default vendor folder.
 
 **Example:**
 ````javascript
