@@ -110,48 +110,48 @@ start: function() {
 ####`getScripts()`
 **Should return: Array**
 
-The getScripts 方法被调用是为了请求任何可选的需被加载的脚本. This method should therefore return an array with strings. If you want to return a full path to a file in the module folder, use the `this.file('filename.js')` method. In all cases the loader will only load a file once. It even checks if the file is available in the default vendor folder.
+ getScripts方法被调用是为了请求任何可选的需被加载的脚本.这个方法应当返回一个包含字符串的数组。如果你希望返回一个完整的路径到moudle文件夹，使用 `this.file('filename.js')` 方法.在任何情况下加载器将只加载一个文件一次。 它还会在默认vendor文件夹的文件是否可用。
 
 **Example:**
 ````javascript
 getScripts: function() {
 	return [
-		'script.js', // will try to load it from the vendor folder, otherwise it will load is from the module folder.
-		'moment.js', // this file is available in the vendor folder, so it doesn't need to be available in the module folder.
-		this.file('anotherfile.js'), // this file will be loaded straight from the module folder.
-		'https://code.jquery.com/jquery-2.2.3.min.js',  // this file will be loaded from the jquery servers.
+		'script.js', // 将会尝试从vendor文件夹加载它，否则将会从module文件夹加载它。
+		'moment.js', // 这个文件在vendor文件夹可用，所以它不需要在module可用。
+		this.file('anotherfile.js'), // 这个文件将直接从module文件夹加载。
+		'https://code.jquery.com/jquery-2.2.3.min.js',  // 这个文件将被从jquery服务器加载。
 	]
 }
 
 ````
-**Note:** If a file can not be loaded, the boot up of the mirror will stall. Therefore it's advised not to use any external urls.
+**Note:** 如果文件不能被加载，启动将被停止。因此建议不要使用任何外部url。
 
 
 ####`getStyles()`
 **Should return: Array**
 
-The getStyles method is called to request any additional stylesheets that need to be loaded. This method should therefore return an array with strings. If you want to return a full path to a file in the module folder, use the `this.file('filename.css')` method. In all cases the loader will only load a file once. It even checks if the file is available in the default vendor folder.
+getStyles方法被调用来请求任何可选的需被加载的样式表。这个方法应当因此返回一个包括字符串的数组。如果你想要返回一个完整的路径到module文件夹中的一个文件，使用 `this.file('filename.css')` 方法。在任何情况下加载器将一次只加载一个文件。它还会检查默认vendor文件夹下文件是否可用。
 
 **Example:**
 ````javascript
 getStyles: function() {
 	return [
-		'script.css', // will try to load it from the vendor folder, otherwise it will load is from the module folder.
-		'font-awesome.css', // this file is available in the vendor folder, so it doesn't need to be avialable in the module folder.
-		this.file('anotherfile.css'), // this file will be loaded straight from the module folder.
-		'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css',  // this file will be loaded from the bootstrapcdn servers.
+		'script.css', // 将会尝试从vendor文件夹加载它，否则将会从module文件夹加载它。
+		'font-awesome.css', // 这个文件在vendor文件夹可用，所以它不需要在module可用。
+		this.file('anotherfile.css'), // 这个文件将直接从module文件夹加载。
+		'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css',  // 这个文件将被加载自bootstrapcdn服务器.
 	]
 }
 
 ````
-**Note:** If a file can not be loaded, the boot up of the mirror will stall. Therefore it's advised not to use any external urls.
+**Note:** 如果文件不能被加载，启动将被停止。因此建议不要使用任何外部url。
 
 ####`getTranslations()`
 **Should return: Dictionary**
 
-The getTranslations method is called to request translation files that need to be loaded. This method should therefore return a dictionary with the files to load, identified by the country's short name.
+getTranslations方法被调用来请求需被加载的翻译文件。这个方法应当因此返回一个包含文件的字典，通过国家简称识别。
 
-If the module does not have any module specific translations, the function can just be omitted or return `false`.
+如果这个方法没有任何模块特殊翻译, 函数会被忽略或返回 `false`。
 
 **Example:**
 ````javascript
@@ -167,7 +167,7 @@ getTranslations: function() {
 ####`getDom()`
 **Should return:** Dom Object
 
-Whenever the MagicMirror needs to update the information on screen (because it starts, or because your module asked a refresh using `this.updateDom()`), the system calls the getDom method. This method should therefore return a dom object.
+当mm需要更新屏幕上的信息时（因它启动时，或因你的模块使用`this.updateDom()`要求刷新时）,系统会调用 getDom 方法。这个方法应当因此返回一个dom对象。
 
 **Example:**
 ````javascript
