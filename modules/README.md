@@ -182,11 +182,11 @@ getDom: function() {
 ####`getHeader()`
 **Should return:** String
 
-Whenever the MagicMirror needs to update the information on screen (because it starts, or because your module asked a refresh using `this.updateDom()`), the system calls the getHeader method to retrieve the module's header. This method should therefor return a string. If this method is not subclassed, this function will return the user's configured header.
+当MM需要在屏幕上更新信息时，(因为当他启动时，或因为你的模块使用 `this.updateDom()`要求刷新界面时),系统会调用 getHeader 方法来取回模块的 header. 这个方法应当因此返回一个字符串。如果这个方法不是子类,这个函数会返回用户配置过的 header.
 
-If you want to use the original user's configured header, reference `this.data.header`.
+如果你想要使用原始用户的配置header, 参考 `this.data.header`.
 
-**NOTE:** If the user did not configure a default header, no header will be displayed and thus this method will not be called.
+**NOTE:** 如果用户没有配置一个默认的header, header 将不会被显示且因此本方法不会被调用。
 
 **Example:**
 ````javascript
@@ -198,11 +198,11 @@ getHeader: function() {
 
 ####`notificationReceived(notification, payload, sender)`
 
-That MagicMirror core has the ability to send notifications to modules. Or even better: the modules have the possibility to send notifications to other modules. When this module is called, it has 3 arguments:
+MM核心拥有向模块发送通知的能力。亦或更甚:模块可以发送通知到其他模块.当这个模块被调用的时候, 它会有三个参数:
 
-- `notification` - String - The notification identifier.
-- `payload` - AnyType - The payload of a notification.
-- `sender` - Module - The sender of the notification. If this argument is `undefined`, the sender of the notififiction is the core system.
+- `notification` - String - 通知识别码.
+- `payload` - AnyType - 通知载荷.
+- `sender` - Module - 通知发送者。如果这个参数是 `undefined`, 发送者将为核心系统。
 
 **Example:**
 ````javascript
@@ -215,21 +215,21 @@ notificationReceived: function(notification, payload, sender) {
 }
 ````
 
-**Note:** the system sends two notifications when starting up. These notifications could come in handy!
+**Note:** 系统会在启动时发送两则通知.这些通知可能会派上用场!
 
 
-- `ALL_MODULES_STARTED` - All modules are started. You can now send notifications to other modules.
-- `DOM_OBJECTS_CREATED` - All dom objects are created. The system is now ready to perform visual changes.
+- `ALL_MODULES_STARTED` - 所有模块已启动.你可以发送通知到其他模块。
+- `DOM_OBJECTS_CREATED` - 所有dom对象已被创建。系统已经准备表现可视变化。
 
 
 ####`socketNotificationReceived: function(notification, payload)`
-When using a node_helper, the node helper can send your module notifications. When this module is called, it has 2 arguments:
+当使用node_helper时, node helper 能够发送你的模块通知。当这个模块被调用时,它会有两个参数:
 
-- `notification` - String - The notification identifier.
-- `payload` - AnyType - The payload of a notification.
+- `notification` - String - 通知识别码.
+- `payload` - AnyType - 通知载荷.
 
-**Note 1:** When a node helper sends a notification, all modules of that module type receive the same notifications. <br>
-**Note 2:** The socket connection is established as soon as the module sends its first message using [sendSocketNotification](thissendsocketnotificationnotification-payload).
+**Note 1:** 当node helper发送一个通知时,所有的此种类的模块会受到相同的通知. <br>
+**Note 2:** 插槽系统的链接被建立时模块会发送它的第一条信息通过 [sendSocketNotification](thissendsocketnotificationnotification-payload).
 
 **Example:**
 ````javascript
@@ -239,46 +239,46 @@ socketNotificationReceived: function(notification, payload) {
 ````
 
 ####`suspend()`
-When a module is hidden (using the `module.hide()` method), the `suspend()` method will be called. By subclassing this method you can perform tasks like halting the update timers.
+当一个模块呗隐藏时(使用 `module.hide()` 方法),  `suspend()` 方法会被调用。通过子类化这个方法你可以执行例如停止更新计时器的任务。
 
 ####`resume()`
-When a module will be shown after it was previously hidden (using the `module.show()` method), the `resume()` method will be called. By subclassing this method you can perform tasks restarting the update timers.
+当一个模块将从先前的隐藏中显示的时候(使用 `module.show()` 方法), `resume()` 方法将被调用。通过子类化这个方法你可以 执行例如重启更新计时器的任务。
 
 
-### Module instance methods
+### 模块实例方法
 
-Each module instance has some handy methods which can be helpful building your module.
+每个模块实例有着一些方便的方法能在构建你自己的模块时派上用场。
 
 
 ####`this.file(filename)`
-***filename* String** - The name of the file you want to create the path for.<br>
+***filename* String** - 你希望创建路径的文件的名称.<br>
 **Returns String**
 
-If you want to create a path to a file in your module folder, use the `file()` method. It returns the path to the filename given as the attribute. Is method comes in handy when configuring the [getScripts](#getscripts) and [getStyles](#getstyles) methods.
+如果你希望在你的模块文件夹中创建一个到文件的路径,使用 `file()` 方法。 它会返回一个到作为属性给出的文件名的路径. 当配置 [getScripts](#getscripts) 和 [getStyles](#getstyles) 方法时此方法确实很方便。
 
 ####`this.updateDom(speed)`
-***speed* Number** - Optional. Animation speed in milliseconds.<br>
+***speed* Number** - 可选。动画速度（毫秒为单位）.<br>
 
-Whenever your module need to be updated, call the `updateDom(speed)` method. It requests the MagicMirror core to update its dom object. If you define the speed, the content update will be animated, but only if the content will really change.
+当你的模块需要被更新时,调用 `updateDom(speed)` 方法. 它需要MM核心去更新它的dom对象. 如果你定义了速度，内容更新会被动画化,这只会出现子内容确实改变的情况。
 
-As an example: the clock modules calls this method every second:
+作为一个例子: 一个时钟模块每秒都会调用这个方法:
 
 ````javascript
 ...
 start: function() {
 	var self = this;
 	setInterval(function() {
-		self.updateDom(); // no speed defined, so it updates instantly.
-	}, 1000); //perform every 1000 milliseconds.
+		self.updateDom(); //速度未被定义，因此它会被立即更新。
+	}, 1000); //每1000毫秒运行一次。
 },
 ...
 ````
 
 ####`this.sendNotification(notification, payload)`
-***notification* String** - The notification identifier.<br>
-***payload* AnyType** - Optional. A notification payload.<br>
+***notification* String** - 通知识别码.<br>
+***payload* AnyType** - 可选。一个通知载荷.<br>
 
-If you want to send a notification to all other modules, use the `sendNotification(notification, payload)`. All other modules will receive the message via the [notificationReceived](#notificationreceivednotification-payload-sender) method. In that case, the sender is automatically set to the instance calling the sendNotification method.
+如果你想要发送一个通知到所有其他的模块,使用 `sendNotification(notification, payload)`. 所有其他的模块会收到信息通过 [notificationReceived](#notificationreceivednotification-payload-sender) 方法. 在这种情况下，发送器会调用 sendNotification 方法自动设定实例。
 
 **Example:**
 ````javascript
@@ -286,10 +286,10 @@ this.sendNotification('MYMODULE_READY_FOR_ACTION', {foo:bar});
 ````
 
 ####`this.sendSocketNotification(notification, payload)`
-***notification* String** - The notification identifier.<br>
-***payload* AnyType** - Optional. A notification payload.<br>
+***notification* String** - 通知识别码.<br>
+***payload* AnyType** - 可选.一个通知载荷.<br>
 
-If you want to send a notification to the node_helper, use the `sendSocketNotification(notification, payload)`. Only the node_helper of this module will receive the socket notification.
+如果你希望发送一个通知到node_helper, 使用 `sendSocketNotification(notification, payload)`. 只有模块的node_helper会收到插槽通知.
 
 **Example:**
 ````javascript
@@ -297,18 +297,18 @@ this.sendSocketNotification('SET_CONFIG', this.config);
 ````
 
 ####`this.hide(speed, callback, options)`
-***speed* Number** - Optional (Required when setting callback or options), The speed of the hide animation in milliseconds.
-***callback* Function** - Optional, The callback after the hide animation is finished.
-***options* Function** - Optional, Object with additional options for the hide action (see below). (*Introduced in version: 2.1.0.*)
+***speed* Number** - 可选 (设置回调或选项时需要), 隐藏动画的速度，以毫秒为单位.
+***callback* Function** - 可选, 隐藏动画结束后回调.
+***options* Function** - 可选，为隐藏动作而有额外操作的对象(见下). (*发布于版本: 2.1.0.*)
 
-To hide a module, you can call the `hide(speed, callback)` method. You can call the hide method on the module instance itself using `this.hide()`, but of course you can also hide another module using `anOtherModule.hide()`.
+要隐藏一个模块,你需要调用 `hide(speed, callback)` 方法. 你能在模块实例本身中调用隐藏方法通过 `this.hide()`, 但是当然你也可以隐藏通过`anOtherModule.hide()`.
 
-Possible configurable options:
+可能的配置选项:
 
-- `lockString` - String - When setting lock string, the module can not be shown without passing the correct lockstring. This way (multiple) modules can prevent a module from showing. It's considered best practice to use your modules identifier as the locksString: `this.identifier`. See *visibility locking* below.
+- `lockString` - String - 当设定lockString时,模块无法通过正确的lockString显示. 这个方法 (多数)模块能阻止模块显示.使用您的模块标识符作为locksString被认为是最佳做法: `this.identifier`. 见 *visibility locking* 如下.
 
 
-**Note 1:** If the hide animation is canceled, for instance because the show method is called before the hide animation was finished, the callback will not be called.<br>
+**Note 1:** 如果隐藏动画被取消, for instance because the show method is called before the hide animation was finished, the callback will not be called.<br>
 **Note 2:** If the hide animation is hijacked (an other method calls hide on the same module), the callback will not be called.<br>
 **Note 3:** If the dom is not yet created, the hide method won't work. Wait for the `DOM_OBJECTS_CREATED` [notification](#notificationreceivednotification-payload-sender).
 
